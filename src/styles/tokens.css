@@ -1,0 +1,11 @@
+/* Direction A tokens. Placeholder values until the approved homepage mockup is attached. */
+:root {
+  --paper: #f6f2ea;
+  --ink: #1d1f2a;
+  --slate: #2f3a5c;
+  --amber: #e0a526; /* availability pill only */
+  --rule: #d9d2c3;
+  --font-display: 'Archivo', system-ui, sans-serif;
+  --font-body: 'Source Serif 4', Georgia, serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+}

@@ -1,0 +1,184 @@
+{
+  "profile": {
+    "Name": "Benjamin Walczyk",
+    "One-liner": "A ServiceNow program and project manager who brings governance, delivery discipline and executive visibility to complex multi-module implementations — and works the problem until the client is happy.",
+    "Availability Status": "Available now",
+    "Lead Time": "Two weeks before a new engagement starts",
+    "Engagement Types": [
+      "1099",
+      "C2C"
+    ],
+    "Work Arrangement": "Fully remote; onsite for workshops and events with two weeks' notice",
+    "Travel": "25–40%",
+    "Notice Period": "Two weeks",
+    "Work Authorization": "US citizen",
+    "Clearance": "None",
+    "Rate Range": "$100–$130/hr",
+    "Publish Rate": true,
+    "Time Zone": "US Central; works US Eastern hours",
+    "Location": "Austin, Texas",
+    "Languages": "English",
+    "Email": "benjamin@bwcstexas.com",
+    "LinkedIn": "https://www.linkedin.com/in/bwcstexas",
+    "Target Roles": "Program Manager\nSenior Program Manager\nSenior Project Manager\nEngagement Manager",
+    "Sectors": "Public sector and government\nLife sciences and medical device\nFinancial services and telecommunications\nHigher education, nonprofit and utilities"
+  },
+  "engagements": [
+    {
+      "Title": "Global defense and aerospace manufacturer",
+      "Slug": "defense-aerospace-platform-consolidation",
+      "Sort Order": 1,
+      "Sector": "Defense & aerospace",
+      "Role": "Enterprise ITSM Change Manager / Project Manager",
+      "Engaged Via": "Delivery partner",
+      "Start": "2022-08-01",
+      "End": "2023-10-31",
+      "Modules": [
+        "FedRAMP",
+        "ITSM",
+        "Change Management",
+        "CSM",
+        "FSM",
+        "HAM",
+        "SAM"
+      ],
+      "Scale": "200,000+ users across 50+ countries and sites; 12 critical systems; 10,000+ endpoints on three continents; $10M+ IT operations portfolio",
+      "Problem": "Two merged organizations running separate service platforms, with no single enterprise change framework and recurring P1/P2 outages across business-critical systems.",
+      "What I Owned": "Global change management and the enterprise ITIL Change Management framework; 20+ readiness assessments and focus groups; governance of change and outage process standardization; weekly reporting to 10+ C-suite executives.",
+      "Outcome": "P1/P2 outages down 20% within six months across 12 critical systems; 98% milestone adherence; 200,000+ users enabled under DoD and NIST compliance.",
+      "Team": "8+ direct reports; ~12 on the program team",
+      "Delivery": "Fully remote"
+    },
+    {
+      "Title": "Regional telecommunications provider",
+      "Slug": "telecom-tni-spm-program",
+      "Sort Order": 2,
+      "Sector": "Telecommunications",
+      "Role": "Program Manager (also Project Manager and Scrum Master)",
+      "Engaged Via": "Delivery partner",
+      "Start": "2024-07-01",
+      "End": "2025-08-31",
+      "Modules": [
+        "TNI",
+        "SPM"
+      ],
+      "Scale": "10,000+ customers served; $3M project portfolio; five cross-functional teams of 25+ members",
+      "Problem": "Service outages in high-demand regions damaging retention, alongside weak portfolio throughput and resource allocation across concurrent projects.",
+      "What I Owned": "Program accountability for both the TNI deployment and the SPM optimization, including project management and Scrum Master duties across the delivery teams.",
+      "Outcome": "Service outages down 25% for 10,000+ customers; customer retention up 15%; project completion rates up 15%.",
+      "Team": "30 on the program"
+    },
+    {
+      "Title": "Global cybersecurity software company",
+      "Slug": "cybersecurity-cloud-security-program",
+      "Sort Order": 3,
+      "Sector": "Technology",
+      "Role": "Global Program Manager, Cloud Security Program",
+      "Engaged Via": "BWCS direct",
+      "Start": "2025-09-01",
+      "Current": true,
+      "Modules": [
+        "Program governance"
+      ],
+      "Scale": "$560M in annual recurring revenue across 1,700+ accounts in JPAC, EMEA and NAM; top 100 strategic accounts each above $5M ARR",
+      "Problem": "No consistent view of commitments, progress and risk across three regions, leaving leadership without a reliable picture of the cloud security program.",
+      "What I Owned": "Program and portfolio accountability for account commitments and progress; presale program plans for the top 100 strategic accounts; weekly metrics, dashboards and performance tracking; governance of week-over-week account updates.",
+      "Outcome": "One consistent leadership view of commitments, progress and risk across three regions, with risk surfaced early enough to act on.",
+      "Team": "2 direct reports; cross-functional team of program, consulting and account specialists"
+    }
+  ],
+  "credentials": [
+    {
+      "Name": "Project Management Essentials Certified (PMEC)",
+      "Issuer": "Management and Strategy Institute",
+      "Status": "Held",
+      "Sort Order": 1
+    },
+    {
+      "Name": "Lean Six Sigma White Belt (LSSWB)",
+      "Issuer": "Management and Strategy Institute",
+      "Status": "Held",
+      "Sort Order": 2
+    },
+    {
+      "Name": "OKR Certified: Leadership and Goal Setting",
+      "Issuer": "What Matters",
+      "Status": "Held",
+      "Sort Order": 3
+    },
+    {
+      "Name": "ServiceNow Certified System Administrator (CSA)",
+      "Issuer": "ServiceNow",
+      "Status": "In progress",
+      "Sort Order": 4
+    },
+    {
+      "Name": "SAFe",
+      "Issuer": "Scaled Agile",
+      "Status": "Planned",
+      "Sort Order": 5
+    }
+  ],
+  "modules": [
+    {
+      "Module": "ITSM",
+      "Full Name": "IT Service Management",
+      "Level": "Own",
+      "Sort Order": 1
+    },
+    {
+      "Module": "HRSD",
+      "Full Name": "HR Service Delivery",
+      "Level": "Own",
+      "Sort Order": 2
+    },
+    {
+      "Module": "SPM",
+      "Full Name": "Strategic Portfolio Management",
+      "Level": "Own",
+      "Sort Order": 3
+    },
+    {
+      "Module": "HAM / SAM",
+      "Full Name": "Hardware and Software Asset Management",
+      "Level": "Own",
+      "Sort Order": 4
+    },
+    {
+      "Module": "Discovery & CMDB",
+      "Full Name": "Discovery and CMDB (CSDM-aligned)",
+      "Level": "Own",
+      "Sort Order": 5
+    },
+    {
+      "Module": "IRM / GRC",
+      "Full Name": "Integrated Risk Management",
+      "Level": "Own",
+      "Sort Order": 6
+    },
+    {
+      "Module": "SecOps",
+      "Full Name": "Security Operations",
+      "Level": "Advise",
+      "Sort Order": 7
+    },
+    {
+      "Module": "CSM",
+      "Full Name": "Customer Service Management",
+      "Level": "Advise",
+      "Sort Order": 8
+    },
+    {
+      "Module": "FSM",
+      "Full Name": "Field Service Management",
+      "Level": "Advise",
+      "Sort Order": 9
+    },
+    {
+      "Module": "TNI",
+      "Full Name": "Telecommunications Network Inventory",
+      "Level": "Advise",
+      "Sort Order": 10
+    }
+  ]
+}

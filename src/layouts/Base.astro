@@ -1,0 +1,29 @@
+---
+import '@fontsource/archivo/400.css';
+import '@fontsource/archivo/700.css';
+import '@fontsource/source-serif-4/400.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '../styles/tokens.css';
+
+interface Props { title: string; description?: string }
+const { title, description } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+<style is:global>
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: 1.55; }
+  main { max-width: 52rem; margin: 0 auto; padding: 2rem 1rem; }
+  h1, h2, h3 { font-family: var(--font-display); letter-spacing: normal; }
+  .mono { font-family: var(--font-mono); font-size: 0.85rem; }
+</style>

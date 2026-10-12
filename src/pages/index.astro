@@ -1,0 +1,20 @@
+---
+// Scaffold page: proves the Airtable → build pipeline. Replaced in Step 5.
+import Base from '../layouts/Base.astro';
+import { getContent } from '../lib/content';
+const { profile, engagements, credentials, modules } = await getContent();
+---
+<Base title={`${profile.name} — ServiceNow Program Manager`} description={profile.oneLiner}>
+  <main>
+    <p class="mono">{profile.availabilityStatus} · {profile.engagementTypes.join(' / ')} · {profile.location}</p>
+    <h1>{profile.name}</h1>
+    <p>{profile.oneLiner}</p>
+    <h2>Engagements</h2>
+    <ul>{engagements.map((e) => <li><strong>{e.title}</strong> — {e.role}</li>)}</ul>
+    <h2>Modules</h2>
+    <p>Own: {modules.filter((m) => m.level === 'Own').map((m) => m.module).join(', ')}</p>
+    <p>Advise: {modules.filter((m) => m.level === 'Advise').map((m) => m.module).join(', ')}</p>
+    <h2>Credentials</h2>
+    <ul>{credentials.map((c) => <li>{c.name} <span class="mono">({c.status})</span></li>)}</ul>
+  </main>
+</Base>
