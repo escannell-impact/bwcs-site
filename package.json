@@ -13,5 +13,10 @@
     "@fontsource/ibm-plex-mono": "^5.2.7",
     "@fontsource/source-serif-4": "^5.2.9",
     "astro": "^5.18.2"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261012.1",
+    "esbuild": "^0.28.2",
+    "typescript": "^5.9.3"
   }
 }
