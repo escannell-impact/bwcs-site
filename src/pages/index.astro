@@ -1,20 +1,145 @@
 ---
-// Scaffold page: proves the Airtable → build pipeline. Replaced in Step 5.
 import Base from '../layouts/Base.astro';
+import Record from '../components/Record.astro';
+import CaseNote from '../components/CaseNote.astro';
 import { getContent } from '../lib/content';
-const { profile, engagements, credentials, modules } = await getContent();
+
+const { profile, engagements, credentials, modules, history } = await getContent();
+const own = modules.filter((m) => m.level === 'Own');
+const advise = modules.filter((m) => m.level === 'Advise');
+const held = credentials.filter((c) => c.status === 'Held');
+const pending = credentials.filter((c) => c.status !== 'Held');
+const booking = profile.bookingUrl;
+const types = profile.engagementTypes.join(' and ');
 ---
-<Base title={`${profile.name} — ServiceNow Program Manager`} description={profile.oneLiner}>
-  <main>
-    <p class="mono">{profile.availabilityStatus} · {profile.engagementTypes.join(' / ')} · {profile.location}</p>
-    <h1>{profile.name}</h1>
-    <p>{profile.oneLiner}</p>
-    <h2>Engagements</h2>
-    <ul>{engagements.map((e) => <li><strong>{e.title}</strong> — {e.role}</li>)}</ul>
-    <h2>Modules</h2>
-    <p>Own: {modules.filter((m) => m.level === 'Own').map((m) => m.module).join(', ')}</p>
-    <p>Advise: {modules.filter((m) => m.level === 'Advise').map((m) => m.module).join(', ')}</p>
-    <h2>Credentials</h2>
-    <ul>{credentials.map((c) => <li>{c.name} <span class="mono">({c.status})</span></li>)}</ul>
-  </main>
+<Base title={`${profile.name} — ServiceNow program manager, Austin`} current="home">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <h1>ServiceNow program management, from kickoff to go-live.</h1>
+        <p class="serif lead">I run multi-module ServiceNow programs for public sector, defense and regulated enterprise clients. Governance, delivery discipline and the executive reporting that keeps a program honest.</p>
+        <div class="cta">
+          {booking && <a class="btn btn-p" href={booking}>Book an intro call</a>}
+          <a class="btn btn-s" href="/contact">Send a role description</a>
+        </div>
+      </div>
+      <Record profile={profile} />
+    </div>
+  </section>
+
+  <section class="sec" id="engagements" aria-labelledby="eng-h">
+    <div class="wrap">
+      <div class="sec-head"><h2 id="eng-h">Selected engagements</h2><span class="aside">Clients are described by sector, not named</span></div>
+      {engagements.map((e, i) => <CaseNote e={e} flip={i % 2 === 1} />)}
+    </div>
+  </section>
+
+  <section class="sec caps-sec" id="capabilities" aria-labelledby="cap-h">
+    <div class="wrap">
+      <div class="sec-head"><h2 id="cap-h">Capabilities</h2></div>
+      <div class="caps">
+        <div>
+          <h3>Modules I lead</h3>
+          <ul class="mods">{own.map((m) => <li><b>{m.module}</b><span>{m.fullName}</span></li>)}</ul>
+        </div>
+        <div>
+          <h3>Modules I advise on</h3>
+          <p class="note">With a technical lead alongside.</p>
+          <ul class="mods">{advise.map((m) => <li><b>{m.module}</b><span>{m.fullName}</span></li>)}</ul>
+        </div>
+        <div>
+          <h3>Roles</h3>
+          <ul class="plain">{profile.targetRoles.map((r) => <li>{r}</li>)}</ul>
+          <h3 class="gap">Sectors</h3>
+          <ul class="plain">{profile.sectors.map((s) => <li>{s}</li>)}</ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="sand">
+    <section class="sec" aria-labelledby="track-h">
+      <div class="wrap">
+        <div class="sec-head"><h2 id="track-h">Track record and credentials</h2></div>
+        <div class="track">
+          <ol class="tl">
+            {history.map((h) => (
+              <li>
+                <span class="y">{h.period}</span>
+                <span class="t">{h.title}</span>
+                <span class="o">{h.organization}</span>
+                {h.detail && <span class="d">{h.detail}</span>}
+              </li>
+            ))}
+          </ol>
+          <div class="creds">
+            <h3>Certifications held</h3>
+            <ul>{held.map((c) => <li>{c.name}<span>{c.issuer}</span></li>)}</ul>
+            {pending.length > 0 && <>
+              <h3 class="gap">Working toward</h3>
+              <ul>{pending.map((c) => <li>{c.name}<span>{c.status}</span></li>)}</ul>
+            </>}
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section class="close" aria-labelledby="close-h">
+    <div class="wrap close-grid">
+      <div>
+        <h2 id="close-h">Available now for {types} engagements.</h2>
+        <p class="serif measure">Twenty minutes is usually enough to know whether there's a fit. Book a call, or send the role description first.</p>
+      </div>
+      <div class="cta">
+        {booking && <a class="btn btn-p" href={booking}>Book an intro call</a>}
+        <a class="btn btn-s" href="/contact">Send a role description</a>
+      </div>
+    </div>
+  </section>
 </Base>
+
+<style>
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: 64px; align-items: center; padding-top: 72px; padding-bottom: 72px; }
+  h1 { font-size: clamp(36px, 5.2vw, 58px); line-height: 1.03; font-weight: 600; letter-spacing: -.03em; margin: 0 0 22px; max-width: 13em; }
+  .lead { font-size: 19px; max-width: 30em; margin: 0; }
+
+  .caps-sec { padding-top: 0; }
+  .caps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 48px; }
+  .caps h3, .creds h3 { font-size: 15px; font-weight: 600; margin: 0 0 14px; }
+  .caps h3.gap, .creds h3.gap { margin-top: 32px; }
+  .note { font-size: 14px; color: var(--mute); margin: -8px 0 14px; }
+  .mods, .plain, .creds ul { list-style: none; margin: 0; padding: 0; }
+  .mods li { display: grid; grid-template-columns: 9.5em 1fr; gap: 12px; padding: 9px 0; border-top: 1px solid var(--rule-soft); font-size: 14px; }
+  .mods b { font: 500 13px/1.5 var(--mono); color: var(--ink); }
+  .mods span { color: var(--body); }
+  .plain li { font-size: 15px; padding: 7px 0; border-top: 1px solid var(--rule-soft); color: var(--body); }
+
+  .sand { background: var(--sand); }
+  .sand .sec-head { border-top-color: var(--sand-line); }
+  .track { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 64px; align-items: start; }
+  .tl { list-style: none; margin: 0; padding: 0 0 0 26px; position: relative; }
+  .tl::before { content: ""; position: absolute; left: 4px; top: 8px; bottom: 8px; width: 1px; background: var(--sand-line); }
+  .tl li { position: relative; display: grid; gap: 2px; padding-bottom: 24px; }
+  .tl li:last-child { padding-bottom: 0; }
+  .tl li::before { content: ""; position: absolute; left: -26px; top: 5px; width: 9px; height: 9px; border-radius: 50%; background: var(--amber); }
+  .y { font: 400 12px/1.4 var(--mono); color: #8B7E68; }
+  .t { font-size: 16px; font-weight: 500; }
+  .o { font-size: 14px; color: #6E6656; }
+  .d { font-family: var(--serif); font-size: 15px; line-height: 1.55; color: #6E6656; margin-top: 4px; max-width: 36em; }
+  .creds { background: #F7F1E6; border: 1px solid var(--sand-line); border-radius: 3px; padding: 22px; }
+  .creds li { padding: 10px 0; border-top: 1px solid #E5DAC6; font-size: 14.5px; display: grid; gap: 2px; }
+  .creds li span { font-size: 13px; color: #8B7E68; }
+
+  .close { background: #EDE9E0; }
+  .close-grid { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 48px; align-items: end; padding-top: 64px; padding-bottom: 64px; }
+  .close h2 { font-size: 30px; line-height: 1.15; font-weight: 600; letter-spacing: -.018em; margin: 0 0 14px; }
+  .close .cta { margin-top: 0; }
+
+  @media (max-width: 960px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 40px; padding-top: 48px; padding-bottom: 56px; }
+    .caps { grid-template-columns: 1fr 1fr; }
+    .track, .close-grid { grid-template-columns: 1fr; gap: 36px; }
+  }
+  @media (max-width: 620px) { .caps { grid-template-columns: 1fr; gap: 36px; } .mods li { grid-template-columns: 8em 1fr; } }
+</style>

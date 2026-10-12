@@ -16,6 +16,7 @@ export const TABLES = {
   engagements: 'tblvmxr6LnEOwi5jn',
   credentials: 'tbl1GkaFjTfm319p1',
   modules: 'tbl9ESkWhp3JWHAXX',
+  history: 'tblCjZ6CF7iiQnteM',
 } as const;
 
 export interface Profile {
@@ -37,6 +38,7 @@ export interface Profile {
   languages?: string;
   email?: string;
   linkedIn?: string;
+  bookingUrl?: string;
   targetRoles: string[];
   sectors: string[];
 }
@@ -58,6 +60,18 @@ export interface Engagement {
   outcome?: string;
   team?: string;
   delivery?: string;
+  headline?: string;
+  narrative: string[];
+  resultFigure?: string;
+  resultLabel?: string;
+}
+
+export interface HistoryItem {
+  title: string;
+  period?: string;
+  organization?: string;
+  detail?: string;
+  sortOrder: number;
 }
 
 export interface Credential {
@@ -113,6 +127,7 @@ const toProfile = (f: Fields): Profile => ({
   languages: f['Languages'],
   email: f['Email'],
   linkedIn: f['LinkedIn'],
+  bookingUrl: f['Booking URL'],
   targetRoles: lines(f['Target Roles']),
   sectors: lines(f['Sectors']),
 });
@@ -134,6 +149,18 @@ const toEngagement = (f: Fields): Engagement => ({
   outcome: f['Outcome'],
   team: f['Team'],
   delivery: f['Delivery'],
+  headline: f['Headline'],
+  narrative: (f['Narrative'] ?? '').split(/\n\s*\n/).map((x: string) => x.trim()).filter(Boolean),
+  resultFigure: f['Result Figure'],
+  resultLabel: f['Result Label'],
+});
+
+const toHistory = (f: Fields): HistoryItem => ({
+  title: f['Title'],
+  period: f['Period'],
+  organization: f['Organization'],
+  detail: f['Detail'],
+  sortOrder: f['Sort Order'] ?? 99,
 });
 
 const toCredential = (f: Fields): Credential => ({
@@ -157,6 +184,7 @@ export interface SiteContent {
   engagements: Engagement[];
   credentials: Credential[];
   modules: Module[];
+  history: HistoryItem[];
 }
 
 let cache: Promise<SiteContent> | undefined;
@@ -168,23 +196,43 @@ export function getContent(): Promise<SiteContent> {
 
 async function load(): Promise<SiteContent> {
   if (!TOKEN) {
-    const s = snapshot as unknown as { profile: Fields; engagements: Fields[]; credentials: Fields[]; modules: Fields[] };
-    return assemble(s.profile, s.engagements, s.credentials, s.modules);
+    const s = snapshot as unknown as { profile: Fields; engagements: Fields[]; credentials: Fields[]; modules: Fields[]; history: Fields[] };
+    return assemble(s.profile, s.engagements, s.credentials, s.modules, s.history);
   }
-  const [profile, engagements, credentials, modules] = await Promise.all([
+  const [profile, engagements, credentials, modules, history] = await Promise.all([
     fetchTable(TABLES.profile),
     fetchTable(TABLES.engagements, '{Published}'),
     fetchTable(TABLES.credentials, '{Published}'),
     fetchTable(TABLES.modules),
+    fetchTable(TABLES.history, '{Published}'),
   ]);
-  return assemble(profile[0], engagements, credentials, modules);
+  return assemble(profile[0], engagements, credentials, modules, history);
 }
 
-function assemble(p: Fields, e: Fields[], c: Fields[], m: Fields[]): SiteContent {
+function assemble(p: Fields, e: Fields[], c: Fields[], m: Fields[], h: Fields[]): SiteContent {
   return {
     profile: toProfile(p),
     engagements: e.map(toEngagement).sort(bySort),
     credentials: c.map(toCredential).sort(bySort),
     modules: m.map(toModule).sort(bySort),
+    history: h.map(toHistory).sort(bySort),
   };
+}
+
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+/** "15 months", or "Since Sep 2025" for current engagements. */
+export function durationLabel(e: Engagement): string {
+  if (!e.start) return '';
+  const [sy, sm] = e.start.split('-').map(Number);
+  if (e.current || !e.end) return `Since ${MONTHS[sm - 1]} ${sy}`;
+  const [ey, em] = e.end.split('-').map(Number);
+  const months = (ey - sy) * 12 + (em - sm) + 1;
+  return `${months} months`;
+}
+
+export function periodLabel(e: Engagement): string {
+  if (!e.start) return '';
+  const fmt = (d: string) => { const [y, m] = d.split('-').map(Number); return `${MONTHS[m - 1]} ${y}`; };
+  return `${fmt(e.start)} – ${e.current || !e.end ? 'present' : fmt(e.end)}`;
 }

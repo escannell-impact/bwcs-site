@@ -1,0 +1,19 @@
+---
+import Base from '../../layouts/Base.astro';
+import CaseNote from '../../components/CaseNote.astro';
+import { getContent } from '../../lib/content';
+const { profile, engagements } = await getContent();
+---
+<Base title={`Engagements — ${profile.name}`} description="Selected ServiceNow and program governance engagements, with clients described by sector." current="engagements">
+  <section class="sec">
+    <div class="wrap">
+      <h1 class="page-h">Engagements</h1>
+      <p class="serif measure intro">Clients are described by sector rather than named. Each schematic shows the structure of the work, not client data.</p>
+      {engagements.map((e, i) => <CaseNote e={e} flip={i % 2 === 1} headingLevel="h2" />)}
+    </div>
+  </section>
+</Base>
+<style>
+  .page-h { font-size: clamp(32px, 4.4vw, 46px); font-weight: 600; letter-spacing: -.025em; margin: 0 0 12px; }
+  .intro { margin: 0 0 48px; }
+</style>

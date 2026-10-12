@@ -7,9 +7,15 @@ import '@fontsource/source-serif-4/600.css';
 import '@fontsource/ibm-plex-mono/400.css';
 import '@fontsource/ibm-plex-mono/500.css';
 import '../styles/tokens.css';
+import '../styles/site.css';
+import { getContent } from '../lib/content';
 
-interface Props { title: string; description?: string }
-const { title, description } = Astro.props;
+interface Props { title: string; description?: string; current?: 'home' | 'engagements' | 'contact' }
+const { title, description, current } = Astro.props;
+const { profile } = await getContent();
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const desc = description ?? profile.oneLiner;
+const year = new Date().getFullYear();
 ---
 <!doctype html>
 <html lang="en">
@@ -17,16 +23,51 @@ const { title, description } = Astro.props;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
-    {description && <meta name="description" content={description} />}
-    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+    <meta name="description" content={desc} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:url" content={canonical} />
+    <meta name="theme-color" content="#F7F5F0" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      name: profile.name,
+      jobTitle: 'ServiceNow program manager',
+      email: profile.email ? `mailto:${profile.email}` : undefined,
+      url: Astro.site?.toString(),
+      sameAs: profile.linkedIn ? [profile.linkedIn] : undefined,
+      address: { '@type': 'PostalAddress', addressLocality: 'Austin', addressRegion: 'TX', addressCountry: 'US' },
+      worksFor: { '@type': 'Organization', name: 'BW Consulting Services LLC' },
+    })} />
   </head>
   <body>
-    <slot />
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="nav">
+      <div class="wrap">
+        <a class="mark" href="/">{profile.name}<small>BW Consulting Services</small></a>
+        <nav aria-label="Main">
+          <ul>
+            <li class="hide-sm"><a href="/engagements" aria-current={current === 'engagements' ? 'page' : undefined}>Engagements</a></li>
+            <li class="hide-sm"><a href="/#capabilities">Capabilities</a></li>
+            <li><a class="btn btn-p" href="/contact" aria-current={current === 'contact' ? 'page' : undefined}>Get in touch</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <slot />
+    </main>
+    <footer class="foot">
+      <div class="wrap">
+        <span>© {year} BW Consulting Services LLC. Austin, Texas.</span>
+        <nav aria-label="Footer">
+          {profile.linkedIn && <a href={profile.linkedIn} rel="me">LinkedIn</a>}
+          {profile.email && <a href={`mailto:${profile.email}`}>{profile.email}</a>}
+        </nav>
+      </div>
+    </footer>
   </body>
 </html>
-<style is:global>
-  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); line-height: 1.55; }
-  main { max-width: 52rem; margin: 0 auto; padding: 2rem 1rem; }
-  h1, h2, h3 { font-family: var(--sans); letter-spacing: normal; }
-  .mono { font-family: var(--mono); font-size: 0.85rem; }
-</style>

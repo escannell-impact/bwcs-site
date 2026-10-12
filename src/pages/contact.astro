@@ -1,0 +1,141 @@
+---
+import Base from '../layouts/Base.astro';
+import { getContent } from '../lib/content';
+const { profile } = await getContent();
+const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
+---
+<Base title={`Contact — ${profile.name}`} description="Book an intro call or send a role description." current="contact">
+  <section class="sec">
+    <div class="wrap grid">
+      <div>
+        <h1>Get in touch</h1>
+        <p class="serif measure">Send a role description or a project outline. Recruiters, delivery partners and direct clients are all welcome.</p>
+        {profile.bookingUrl && (
+          <div class="book">
+            <h2>Prefer to talk first?</h2>
+            <p>Book a short intro call directly on my calendar.</p>
+            <a class="btn btn-p" href={profile.bookingUrl}>Book an intro call</a>
+          </div>
+        )}
+        <dl class="direct">
+          {profile.email && <div><dt>Email</dt><dd><a href={`mailto:${profile.email}`}>{profile.email}</a></dd></div>}
+          {profile.linkedIn && <div><dt>LinkedIn</dt><dd><a href={profile.linkedIn}>{profile.linkedIn.replace('https://www.', '')}</a></dd></div>}
+          <div><dt>Based in</dt><dd>{profile.location}</dd></div>
+        </dl>
+      </div>
+
+      <form id="contact" action="/api/contact" method="post" novalidate>
+        <div class="row two">
+          <label>Name<input name="name" autocomplete="name" required maxlength="120" /></label>
+          <label>Email<input name="email" type="email" autocomplete="email" required maxlength="200" /></label>
+        </div>
+        <label>Company<span class="opt">Optional</span><input name="company" autocomplete="organization" maxlength="160" /></label>
+        <div class="row two">
+          <label>What is this about?
+            <select name="inquiryType">
+              <option>Role / submission</option>
+              <option>Project</option>
+              <option>Partnership</option>
+              <option>Other</option>
+            </select>
+          </label>
+          <label>Engagement type
+            <select name="engagementType">
+              <option value="">Select</option>
+              <option>1099</option>
+              <option>C2C</option>
+              <option>W2</option>
+              <option>Not sure</option>
+            </select>
+          </label>
+        </div>
+        <label>When would it start?<span class="opt">Optional</span><input name="startTiming" maxlength="120" placeholder="For example, early November" /></label>
+        <label>Message<textarea name="message" rows="7" required maxlength="5000" placeholder="Role or project, modules involved, location and rate if known."></textarea></label>
+        <label class="hp" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off" /></label>
+        <input type="hidden" name="page" />
+        {siteKey && <div class="cf-turnstile" data-sitekey={siteKey} data-theme="light"></div>}
+        <button class="btn btn-p" type="submit">Send message</button>
+        <p class="status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+  {siteKey && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
+</Base>
+
+<script>
+  const form = document.getElementById('contact') as HTMLFormElement;
+  const status = form.querySelector('.status') as HTMLElement;
+  const button = form.querySelector('button[type=submit]') as HTMLButtonElement;
+  (form.elements.namedItem('page') as HTMLInputElement).value = location.href;
+
+  form.addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    form.querySelectorAll('.err').forEach((n) => n.remove());
+    form.querySelectorAll('[aria-invalid]').forEach((n) => n.removeAttribute('aria-invalid'));
+    status.textContent = '';
+    button.disabled = true;
+    button.textContent = 'Sending…';
+    try {
+      const res = await fetch(form.action, { method: 'POST', body: new FormData(form) });
+      const out = await res.json();
+      if (out.ok) {
+        form.reset();
+        status.textContent = "Message sent. Thank you — I'll reply by email.";
+        status.dataset.state = 'ok';
+      } else if (out.errors) {
+        for (const [name, msg] of Object.entries(out.errors)) {
+          const field = form.elements.namedItem(name) as HTMLElement | null;
+          if (!field) continue;
+          field.setAttribute('aria-invalid', 'true');
+          const p = document.createElement('span');
+          p.className = 'err';
+          p.textContent = String(msg);
+          field.insertAdjacentElement('afterend', p);
+        }
+        status.textContent = 'Check the highlighted fields and send again.';
+        status.dataset.state = 'error';
+      } else {
+        status.textContent = out.error || 'The message did not send. Email benjamin@bwcstexas.com instead.';
+        status.dataset.state = 'error';
+      }
+    } catch {
+      status.textContent = 'The message did not send. Check your connection, or email benjamin@bwcstexas.com.';
+      status.dataset.state = 'error';
+    } finally {
+      button.disabled = false;
+      button.textContent = 'Send message';
+      (window as any).turnstile?.reset?.();
+    }
+  });
+</script>
+
+<style>
+  .grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 72px; align-items: start; }
+  h1 { font-size: clamp(32px, 4.4vw, 46px); font-weight: 600; letter-spacing: -.025em; margin: 0 0 14px; }
+  .book { margin: 36px 0; padding: 22px; background: var(--slate); color: #EDEBE4; border-radius: 4px; }
+  .book h2 { font-size: 18px; font-weight: 600; margin: 0 0 6px; color: #F7F5F0; }
+  .book p { margin: 0 0 16px; color: var(--slate-soft); font-size: 15px; }
+  .book .btn-p { background: var(--paper); color: var(--slate); }
+  .direct { margin: 0; border-top: 1px solid var(--rule); }
+  .direct div { display: grid; grid-template-columns: 7em 1fr; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--rule-soft); font-size: 14px; }
+  .direct dt { color: var(--mute); }
+  .direct dd { margin: 0; font-family: var(--mono); font-size: 13px; }
+
+  form { display: grid; gap: 18px; background: #FBFAF7; border: 1px solid var(--rule); border-radius: 4px; padding: 28px; }
+  .row.two { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  label { display: grid; gap: 6px; font-size: 14px; font-weight: 500; }
+  .opt { font-weight: 400; color: var(--mute); font-size: 13px; margin-top: -4px; }
+  input, select, textarea { font: 400 15px/1.4 var(--sans); color: var(--ink); background: #fff; border: 1px solid #CFC8BB; border-radius: 3px; padding: 11px 12px; width: 100%; }
+  textarea { resize: vertical; font-family: var(--serif); font-size: 16px; line-height: 1.55; }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--indigo); outline-offset: 0; border-color: var(--indigo); }
+  [aria-invalid="true"] { border-color: #A3361F; }
+  :global(.err) { color: #A3361F; font-size: 13px; font-weight: 400; }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  button { justify-self: start; cursor: pointer; }
+  button:disabled { opacity: .6; cursor: progress; }
+  .status { margin: 0; font-size: 15px; min-height: 1.4em; }
+  .status[data-state="ok"] { color: #2F6B3A; }
+  .status[data-state="error"] { color: #A3361F; }
+  @media (max-width: 880px) { .grid { grid-template-columns: 1fr; gap: 40px; } }
+  @media (max-width: 520px) { .row.two { grid-template-columns: 1fr; } form { padding: 20px; } }
+</style>

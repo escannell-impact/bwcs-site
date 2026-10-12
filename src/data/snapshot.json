@@ -21,7 +21,8 @@
     "Email": "benjamin@bwcstexas.com",
     "LinkedIn": "https://www.linkedin.com/in/bwcstexas",
     "Target Roles": "Program Manager\nSenior Program Manager\nSenior Project Manager\nEngagement Manager",
-    "Sectors": "Public sector and government\nLife sciences and medical device\nFinancial services and telecommunications\nHigher education, nonprofit and utilities"
+    "Sectors": "Public sector and government\nLife sciences and medical device\nFinancial services and telecommunications\nHigher education, nonprofit and utilities",
+    "Booking URL": "https://calendly.com/bwcstexas/30min"
   },
   "engagements": [
     {
@@ -47,7 +48,11 @@
       "What I Owned": "Global change management and the enterprise ITIL Change Management framework; 20+ readiness assessments and focus groups; governance of change and outage process standardization; weekly reporting to 10+ C-suite executives.",
       "Outcome": "P1/P2 outages down 20% within six months across 12 critical systems; 98% milestone adherence; 200,000+ users enabled under DoD and NIST compliance.",
       "Team": "8+ direct reports; ~12 on the program team",
-      "Delivery": "Fully remote"
+      "Delivery": "Fully remote",
+      "Headline": "One change framework for a merged defense platform",
+      "Narrative": "Two merged organizations were running separate service platforms with no shared change process, and P1 and P2 outages kept recurring across business-critical systems.\n\nI built the enterprise ITIL change management framework for a FedRAMP ServiceNow deployment: twenty readiness assessments and focus groups, standardized change and outage procedures, and weekly governance reporting to more than ten C-suite executives. I led a team of eight, fully remote, across sites on three continents.",
+      "Result Figure": "−20%",
+      "Result Label": "P1/P2 outages across 12 critical systems in six months"
     },
     {
       "Title": "Regional telecommunications provider",
@@ -66,7 +71,11 @@
       "Problem": "Service outages in high-demand regions damaging retention, alongside weak portfolio throughput and resource allocation across concurrent projects.",
       "What I Owned": "Program accountability for both the TNI deployment and the SPM optimization, including project management and Scrum Master duties across the delivery teams.",
       "Outcome": "Service outages down 25% for 10,000+ customers; customer retention up 15%; project completion rates up 15%.",
-      "Team": "30 on the program"
+      "Team": "30 on the program",
+      "Headline": "Fewer outages and faster delivery for a regional carrier",
+      "Narrative": "Service outages in high-demand regions were costing the carrier customers, and too many concurrent projects were competing for the same people.\n\nI ran the program across two workstreams — a Telecommunications Network Inventory deployment and a Strategic Portfolio Management optimization — and served as project manager and Scrum Master for thirty people in five cross-functional teams. Customer retention rose 15% and project completion rates rose 15%.",
+      "Result Figure": "−25%",
+      "Result Label": "service outages for 10,000+ customers"
     },
     {
       "Title": "Global cybersecurity software company",
@@ -84,7 +93,11 @@
       "Problem": "No consistent view of commitments, progress and risk across three regions, leaving leadership without a reliable picture of the cloud security program.",
       "What I Owned": "Program and portfolio accountability for account commitments and progress; presale program plans for the top 100 strategic accounts; weekly metrics, dashboards and performance tracking; governance of week-over-week account updates.",
       "Outcome": "One consistent leadership view of commitments, progress and risk across three regions, with risk surfaced early enough to act on.",
-      "Team": "2 direct reports; cross-functional team of program, consulting and account specialists"
+      "Team": "2 direct reports; cross-functional team of program, consulting and account specialists",
+      "Headline": "One view of commitments across three regions",
+      "Narrative": "Leadership at a global cybersecurity software company had no consistent picture of commitments, progress and risk across its cloud security accounts in Asia-Pacific, EMEA and North America.\n\nI own program and portfolio governance for the initiative: presale program plans for the top 100 strategic accounts, weekly metrics and dashboards, and a week-over-week update cadence that surfaces risk early enough to act on. I lead a team of two alongside consulting and account specialists.",
+      "Result Figure": "$560M",
+      "Result Label": "annual recurring revenue under program governance"
     }
   ],
   "credentials": [
@@ -179,6 +192,49 @@
       "Full Name": "Telecommunications Network Inventory",
       "Level": "Advise",
       "Sort Order": 10
+    }
+  ],
+  "history": [
+    {
+      "Title": "Program and project manager, independent",
+      "Period": "2023 — present",
+      "Organization": "BW Consulting Services",
+      "Detail": "Program and portfolio governance for a global cloud security initiative. Discovery, SAM and CMDB migration for a life sciences client. SPM operating model for a state government.",
+      "Sort Order": 1
+    },
+    {
+      "Title": "Senior project manager, public sector",
+      "Period": "2023 — 2025",
+      "Organization": "ServiceNow implementation partner",
+      "Detail": "Fifteen-plus implementations for state, local, nonprofit and telecom clients across HRSD, GRC, IRM, TNI and SPM. Program manager on a thirty-person telecom program.",
+      "Sort Order": 2
+    },
+    {
+      "Title": "Enterprise ITSM change manager and project manager",
+      "Period": "2022 — 2023",
+      "Organization": "ServiceNow consultancy, defense program",
+      "Detail": "FedRAMP ServiceNow deployment, enterprise ITIL change framework, global outage and release governance.",
+      "Sort Order": 3
+    },
+    {
+      "Title": "Change management and governance lead",
+      "Period": "2021 — 2022",
+      "Organization": "Public sector technology consultancy",
+      "Detail": "Change management standards adopted as company policy; governance and audit standards for state and city health department programs.",
+      "Sort Order": 4
+    },
+    {
+      "Title": "Change management analyst",
+      "Period": "2017 — 2021",
+      "Organization": "Northeast utility",
+      "Detail": "Change management for a $5M SAP transformation across 10+ sites, aligned to SOX and NERC.",
+      "Sort Order": 5
+    },
+    {
+      "Title": "B.A. International Relations and B.A. History",
+      "Period": "2013",
+      "Organization": "Maxwell School, Syracuse University",
+      "Sort Order": 6
     }
   ]
 }

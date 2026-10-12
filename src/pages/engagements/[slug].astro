@@ -1,0 +1,78 @@
+---
+import Base from '../../layouts/Base.astro';
+import Schematic from '../../components/Schematic.astro';
+import { getContent, durationLabel, periodLabel, type Engagement } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const { engagements } = await getContent();
+  return engagements.map((e) => ({ params: { slug: e.slug }, props: { e } }));
+}
+const { e } = Astro.props as { e: Engagement };
+const { profile, engagements } = await getContent();
+const others = engagements.filter((x) => x.slug !== e.slug);
+const sector = e.title.charAt(0).toUpperCase() + e.title.slice(1);
+const facts: Array<[string, string | undefined]> = [
+  ['Client', sector],
+  ['Role', e.role],
+  ['Period', periodLabel(e)],
+  ['Duration', durationLabel(e)],
+  ['Scope', e.modules.join(', ')],
+  ['Scale', e.scale],
+  ['Team', e.team],
+  ['Delivery', e.delivery],
+];
+const split = (v?: string) => (v ? v.split(';').map((s) => s.trim().replace(/\.$/, '')).filter(Boolean).map((s) => s.charAt(0).toUpperCase() + s.slice(1)) : []);
+---
+<Base title={`${e.headline} — ${profile.name}`} description={`${sector}: ${e.resultFigure ?? ''} ${e.resultLabel ?? ''}`.trim()} current="engagements">
+  <article class="sec">
+    <div class="wrap">
+      <p class="crumb"><a href="/engagements">Engagements</a></p>
+      <h1>{e.headline}</h1>
+      <div class="detail">
+        <div>
+          {e.resultFigure && <p class="result"><span class="n">{e.resultFigure}</span><span class="l">{e.resultLabel}</span></p>}
+          <div class="serif measure">{e.narrative.map((p) => <p>{p}</p>)}</div>
+
+          <h2>What I owned</h2>
+          <ul class="serif measure list">{split(e.owned).map((x) => <li>{x}</li>)}</ul>
+          <h2>Outcome</h2>
+          <ul class="serif measure list">{split(e.outcome).map((x) => <li>{x}</li>)}</ul>
+        </div>
+        <aside>
+          <dl class="facts">{facts.filter(([, v]) => v).map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}</dl>
+          <Schematic slug={e.slug} />
+        </aside>
+      </div>
+    </div>
+  </article>
+  <section class="sec more">
+    <div class="wrap">
+      <div class="sec-head"><h2>Other engagements</h2></div>
+      <ul class="others">
+        {others.map((o) => <li><a href={`/engagements/${o.slug}`}>{o.headline}</a><span>{o.title.charAt(0).toUpperCase() + o.title.slice(1)}</span></li>)}
+      </ul>
+    </div>
+  </section>
+</Base>
+<style>
+  .crumb { margin: 0 0 18px; font-size: 14px; }
+  h1 { font-size: clamp(32px, 4.4vw, 48px); line-height: 1.08; font-weight: 600; letter-spacing: -.025em; margin: 0 0 36px; max-width: 18em; }
+  .detail { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 64px; align-items: start; }
+  .detail h2 { font-size: 18px; font-weight: 600; margin: 36px 0 10px; }
+  .result { display: flex; align-items: baseline; gap: 14px; margin: 0 0 24px; padding-left: 14px; border-left: 3px solid var(--indigo); }
+  .result .n { font-size: 48px; line-height: 1; font-weight: 600; letter-spacing: -.02em; color: var(--indigo); }
+  .result .l { font-family: var(--serif); font-size: 17px; color: var(--body); max-width: 18em; }
+  .list { padding-left: 1.1em; margin: 0; }
+  .list li { margin-bottom: .45em; }
+  .facts { margin: 0 0 24px; border-top: 1px solid var(--rule); }
+  .facts div { display: grid; grid-template-columns: 6.5em 1fr; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--rule-soft); }
+  .facts dt { font-size: 13px; color: var(--mute); }
+  .facts dd { margin: 0; font: 400 13px/1.5 var(--mono); }
+  .more { padding-top: 0; }
+  .others { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .others li { display: grid; gap: 4px; border-top: 1px solid var(--rule); padding-top: 14px; }
+  .others a { font-size: 19px; font-weight: 600; color: var(--ink); text-decoration: none; }
+  .others a:hover { text-decoration: underline; }
+  .others span { font-size: 14px; color: var(--mute); }
+  @media (max-width: 900px) { .detail { grid-template-columns: 1fr; gap: 40px; } .others { grid-template-columns: 1fr; } }
+</style>

@@ -1,0 +1,74 @@
+---
+/**
+ * The hero's signature element: Ben's availability set out as a service record,
+ * with the facts recruiters screen for first. Shows public/portrait.jpg when it exists,
+ * otherwise a monogram.
+ */
+import fs from 'node:fs';
+import type { Profile } from '../lib/content';
+
+interface Props { profile: Profile }
+const { profile: p } = Astro.props;
+
+const hasPortrait = fs.existsSync(new URL('../../public/portrait.jpg', import.meta.url));
+const initials = p.name.split(' ').map((w) => w[0]).join('').slice(0, 2);
+const updated = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'America/Chicago' });
+
+const state =
+  p.availabilityStatus === 'Available from date' && p.availableFrom
+    ? `Available ${new Date(p.availableFrom + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}`
+    : p.availabilityStatus;
+
+const typeLine = p.engagementTypes.length ? p.engagementTypes.join(' or ') : undefined;
+const fields: Array<[string, string | undefined]> = [
+  ['Engagement', typeLine],
+  ['Rate', p.publishRate ? p.rateRange : 'On request'],
+  ['Notice', p.noticePeriod],
+  ['Work', p.travel ? `Remote, ${p.travel} travel` : p.workArrangement],
+  ['Location', p.location],
+  ['Time zone', p.timeZone?.split(';')[0]],
+  ['Authorization', p.workAuthorization],
+];
+---
+<aside class="record" aria-label="Availability">
+  <div class="rec-top">
+    <span>Consultant record</span>
+    <span>Updated {updated}</span>
+  </div>
+  <div class="rec-id">
+    {hasPortrait
+      ? <img class="avatar" src="/portrait.jpg" alt={`Portrait of ${p.name}`} width="72" height="72" />
+      : <span class="avatar mono-gram" aria-hidden="true">{initials}</span>}
+    <div>
+      <p class="rec-name">{p.name}</p>
+      <p class="rec-role">ServiceNow program manager</p>
+    </div>
+  </div>
+  <dl class="rec-fields">
+    <div class="state">
+      <dt>State</dt>
+      <dd><span class="pill"><span class="dot" aria-hidden="true"></span>{state}</span></dd>
+    </div>
+    {fields.filter(([, v]) => v).map(([k, v]) => (
+      <div><dt>{k}</dt><dd>{v}</dd></div>
+    ))}
+  </dl>
+</aside>
+
+<style>
+  .record { background: var(--slate); color: #EDEBE4; border-radius: 4px; overflow: hidden; box-shadow: 0 1px 0 rgba(26,29,31,.04), 0 18px 40px -24px rgba(47,58,82,.55); }
+  .rec-top { display: flex; justify-content: space-between; gap: 12px; padding: 10px 20px; background: #26304A; font: 400 12px/1.4 var(--mono); color: var(--slate-soft); }
+  .rec-id { display: flex; gap: 16px; align-items: center; padding: 22px 20px 18px; border-bottom: 1px solid rgba(150,160,182,.22); }
+  .avatar { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; flex: none; }
+  .mono-gram { display: grid; place-items: center; background: var(--paper); color: var(--slate); font: 600 24px/1 var(--sans); letter-spacing: var(--track-mark); }
+  .rec-name { margin: 0; font-size: 20px; font-weight: 600; color: #F7F5F0; }
+  .rec-role { margin: 2px 0 0; font-size: 14px; color: var(--slate-soft); }
+  .rec-fields { margin: 0; padding: 8px 20px 18px; display: grid; grid-template-columns: 1fr 1fr; column-gap: 20px; }
+  .rec-fields div { padding: 12px 0; border-bottom: 1px solid rgba(150,160,182,.16); }
+  .rec-fields .state { grid-column: 1 / -1; }
+  dt { font-size: 12px; color: var(--slate-soft); margin-bottom: 4px; }
+  dd { margin: 0; font: 400 14px/1.4 var(--mono); color: #F2F0EA; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; font: 500 13px/1 var(--sans); color: var(--amber-deep); background: var(--amber-wash); padding: 7px 12px; border-radius: 2px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--amber); }
+  @media (max-width: 420px) { .rec-fields { grid-template-columns: 1fr; } }
+</style>

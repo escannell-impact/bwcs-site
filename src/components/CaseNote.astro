@@ -1,0 +1,53 @@
+---
+import type { Engagement } from '../lib/content';
+import { durationLabel } from '../lib/content';
+import Schematic from './Schematic.astro';
+
+interface Props { e: Engagement; flip?: boolean; headingLevel?: 'h2' | 'h3'; link?: boolean }
+const { e, flip = false, headingLevel = 'h3', link = true } = Astro.props;
+const H = headingLevel;
+
+const sector = e.title.charAt(0).toUpperCase() + e.title.slice(1);
+const modules = e.modules.filter((m) => m !== 'Change Management').join(', ');
+const meta: Array<[string, string | undefined]> = [
+  ['Client', sector],
+  ['Role', e.role?.replace(/\s*\(.*\)$/, '')],
+  ['Scope', modules],
+  ['Duration', durationLabel(e)],
+];
+---
+<article class:list={['case', { flip }]}>
+  <div class="txt">
+    <dl class="meta">
+      {meta.filter(([, v]) => v).map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}
+    </dl>
+    <H class="head">{link ? <a href={`/engagements/${e.slug}`}>{e.headline ?? e.title}</a> : (e.headline ?? e.title)}</H>
+    {e.resultFigure && (
+      <p class="result"><span class="fig-n">{e.resultFigure}</span><span class="fig-l">{e.resultLabel}</span></p>
+    )}
+    <div class="serif measure">
+      {e.narrative.map((para) => <p>{para}</p>)}
+    </div>
+  </div>
+  <Schematic slug={e.slug} />
+</article>
+
+<style>
+  .case { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 56px; align-items: start; padding-bottom: 56px; margin-bottom: 56px; border-bottom: 1px solid var(--rule-soft); }
+  .case:last-child { border-bottom: 0; margin-bottom: 0; padding-bottom: 0; }
+  .flip { grid-template-columns: 380px minmax(0, 1fr); }
+  .flip .txt { order: 2; }
+  .meta { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); column-gap: 28px; row-gap: 14px; margin: 0 0 22px; padding: 12px 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .meta dt { font-size: 12px; color: var(--mute); margin-bottom: 3px; }
+  .meta dd { margin: 0; font: 400 13px/1.4 var(--mono); color: var(--ink); }
+  .head { font-size: 27px; line-height: 1.2; font-weight: 600; letter-spacing: -.012em; margin: 0 0 18px; max-width: 22em; }
+  .head a { color: inherit; text-decoration: none; }
+  .head a:hover { text-decoration: underline; text-decoration-thickness: 1px; }
+  .result { display: flex; align-items: baseline; gap: 14px; margin: 0 0 18px; padding-left: 14px; border-left: 3px solid var(--indigo); }
+  .fig-n { font-size: 40px; line-height: 1; font-weight: 600; letter-spacing: -.02em; color: var(--indigo); font-variant-numeric: tabular-nums; }
+  .fig-l { font-family: var(--serif); font-size: 16px; line-height: 1.35; color: var(--body); max-width: 18em; }
+  @media (max-width: 880px) {
+    .case, .flip { grid-template-columns: 1fr; gap: 28px; }
+    .flip .txt { order: 0; }
+  }
+</style>
