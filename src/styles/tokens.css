@@ -1,11 +1,29 @@
-/* Direction A tokens. Placeholder values until the approved homepage mockup is attached. */
+/* Direction A tokens, taken from design/direction-a-homepage-mockup.html.
+   Letter-spacing on uppercase mono labels and the wordmark is reduced from the mockup
+   (.1em → .06em / .04em) to avoid over-tracked labels. */
 :root {
-  --paper: #f6f2ea;
-  --ink: #1d1f2a;
-  --slate: #2f3a5c;
-  --amber: #e0a526; /* availability pill only */
-  --rule: #d9d2c3;
-  --font-display: 'Archivo', system-ui, sans-serif;
-  --font-body: 'Source Serif 4', Georgia, serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --paper: #F7F5F0;
+  --ink: #1A1D1F;
+  --body: #4A4F54;
+  --mute: #8A8781;
+  --rule: #DED9CF;
+  --rule-soft: #EAE6DE;
+  --slate: #2F3A52;
+  --slate-soft: #96A0B6;
+  --indigo: #3B4A6B;
+  --sand: #F0E9DC;
+  --sand-line: #D6C9B2;
+  --amber: #B5771F;      /* availability pill and timeline markers only */
+  --amber-deep: #8A5214;
+  --amber-wash: #F0E2CC;
+
+  --sans: 'Archivo', system-ui, sans-serif;
+  --serif: 'Source Serif 4', Georgia, serif;
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  --track-label: .06em;  /* uppercase mono eyebrows, band keys, meta keys */
+  --track-mark: .04em;   /* wordmark */
+  --wrap: 1080px;
+  --gutter: 48px;
 }
+@media (max-width: 880px) { :root { --gutter: 24px; } }

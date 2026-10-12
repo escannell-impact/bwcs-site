@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Benjamin Walczyk — ServiceNow program management</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F7F5F0; --ink:#1A1D1F; --body:#4A4F54; --rule:#DED9CF; --rule-soft:#EAE6DE;
+  --slate:#2F3A52; --slate-soft:#96A0B6; --indigo:#3B4A6B; --sand:#F0E9DC; --sand-line:#D6C9B2;
+  --amber:#B5771F; --amber-deep:#8A5214; --mute:#8A8781;
+  --sans:'Archivo',system-ui,sans-serif; --serif:'Source Serif 4',Georgia,serif; --mono:'IBM Plex Mono',monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:0 48px}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.serif{font-family:var(--serif);font-size:17px;line-height:1.62;color:var(--body)}
+
+nav{border-bottom:1px solid var(--rule)}
+nav .wrap{display:flex;justify-content:space-between;align-items:center;padding-top:22px;padding-bottom:22px}
+.mark{font-size:15px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;color:var(--ink)}
+nav a.link{font-family:var(--mono);font-size:12px;color:var(--indigo);text-decoration:none;margin-left:26px}
+nav a.link:hover{text-decoration:underline}
+
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:52px;align-items:center;padding-top:64px;padding-bottom:56px}
+.pill{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--amber-deep);background:#F0E2CC;padding:6px 12px;border-radius:2px}
+.pill s{width:7px;height:7px;border-radius:50%;background:var(--amber);display:block}
+h1{font-size:clamp(34px,5vw,54px);line-height:1.04;font-weight:600;letter-spacing:-.028em;margin:22px 0 16px}
+.hero .serif{font-size:19px;max-width:30em}
+.cta{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap}
+.btn{font-size:14px;padding:12px 22px;border-radius:3px;text-decoration:none;display:inline-block}
+.btn-p{background:var(--indigo);color:var(--paper)}
+.btn-s{border:1px solid #C6C0B4;color:var(--ink)}
+
+.ph{background:#E6E1D7;border:1px solid var(--rule);border-radius:3px;display:flex;flex-direction:column;justify-content:flex-end;padding:14px;position:relative}
+.ph b{font-family:var(--mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:#9A9488;font-weight:400;display:block}
+.ph i{font-family:var(--mono);font-size:11px;font-style:normal;color:#7C7669;line-height:1.4;margin-top:3px}
+.ph-hero{height:360px}
+
+.band{background:var(--slate);color:#EDEBE4}
+.band .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;padding-top:30px;padding-bottom:30px}
+.band .k{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--slate-soft);display:block;margin-bottom:8px}
+.band .v{font-size:16px;font-weight:500}
+
+section{padding:64px 0}
+.sec-head{border-top:1px solid var(--rule);padding-top:16px;margin-bottom:36px}
+
+.eng{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:48px;align-items:start;padding-bottom:44px;margin-bottom:44px;border-bottom:1px solid var(--rule-soft)}
+.eng:last-of-type{border-bottom:0;margin-bottom:0}
+.eng.flip .txt{order:2}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:18px;font-family:var(--mono);margin-bottom:20px}
+.meta .k{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);display:block;margin-bottom:5px}
+.meta .v{font-size:13px}
+h2{font-size:27px;font-weight:600;letter-spacing:-.015em;margin:0 0 12px;line-height:1.22}
+.fig{border:1px solid var(--rule);border-radius:3px;background:#FBFAF7;padding:18px 16px 12px}
+.fig svg{display:block;width:100%;height:auto}
+.fig figcaption{font-family:var(--mono);font-size:10px;letter-spacing:.05em;color:var(--mute);text-align:center;margin-top:10px}
+
+.caps{display:grid;grid-template-columns:repeat(4,1fr);gap:36px}
+.caps h3{font-size:14px;font-weight:500;margin:0 0 12px}
+.caps ul{list-style:none;margin:0;padding:0;font-family:var(--mono);font-size:12.5px;line-height:2;color:#5C6167}
+
+.sandband{background:var(--sand)}
+.sandband .sec-head{border-top-color:var(--sand-line)}
+.tlgrid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:52px;align-items:start}
+.tl{position:relative;padding-left:26px}
+.tl:before{content:"";position:absolute;left:4px;top:8px;bottom:8px;width:1px;background:var(--sand-line)}
+.tl li{list-style:none;position:relative;padding-bottom:22px}
+.tl li:last-child{padding-bottom:0}
+.tl li:before{content:"";position:absolute;left:-26px;top:6px;width:9px;height:9px;border-radius:50%;background:var(--amber)}
+.tl .y{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:#8B7E68}
+.tl .t{font-size:15px;line-height:1.5;margin-top:3px}
+.tl .d{font-family:var(--serif);font-size:14.5px;line-height:1.55;color:#6E6656;margin-top:4px}
+.ph-side{height:300px;background:#E4DACA;border-color:var(--sand-line)}
+
+.posts{display:grid;grid-template-columns:repeat(2,1fr);gap:36px}
+.post{border-top:1px solid var(--rule);padding-top:18px}
+.post .y{font-family:var(--mono);font-size:11px;color:var(--mute)}
+.post h3{font-size:19px;font-weight:600;letter-spacing:-.01em;margin:8px 0 8px;line-height:1.28}
+.post p{font-family:var(--serif);font-size:15.5px;line-height:1.6;color:var(--body);margin:0}
+
+.close{background:#EDE9E0}
+.close .wrap{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:52px;align-items:center;padding-top:56px;padding-bottom:56px}
+
+footer{border-top:1px solid var(--rule)}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;padding-top:26px;padding-bottom:26px;font-family:var(--mono);font-size:11px;color:var(--mute)}
+footer a{color:var(--mute)}
+
+@media (max-width:880px){
+  .wrap{padding:0 24px}
+  .hero .wrap,.eng,.tlgrid,.close .wrap{grid-template-columns:1fr;gap:32px}
+  .band .wrap{grid-template-columns:repeat(2,1fr)}
+  .caps,.posts{grid-template-columns:repeat(2,1fr);gap:28px}
+  .eng.flip .txt{order:0}
+  .ph-hero{height:280px}
+  section{padding:48px 0}
+}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <a class="mark" href="/">Benjamin Walczyk</a>
+  <div>
+    <a class="link" href="#engagements">Engagements</a>
+    <a class="link" href="#capabilities">Capabilities</a>
+    <a class="link" href="#writing">Writing</a>
+    <a class="link" href="#contact">Contact</a>
+  </div>
+</div></nav>
+
+<div class="hero"><div class="wrap">
+  <div>
+    <span class="pill"><s></s>Available October 2026</span>
+    <h1>ServiceNow program management.</h1>
+    <p class="serif">Fifteen years running ITSM, HRSD, SPM and ITAM implementations for public sector, defense and regulated enterprise clients. I run the program so the platform lands — on schedule, under budget, and audit-ready.</p>
+    <div class="cta">
+      <a class="btn btn-p" href="#contact">Book 20 minutes</a>
+      <a class="btn btn-s" href="#">Download résumé</a>
+    </div>
+  </div>
+  <div class="ph ph-hero"><b>Photo 01</b><i>Environmental portrait — working, mid-shot, natural light, muted palette</i></div>
+</div></div>
+
+<div class="band"><div class="wrap">
+  <div><span class="k">Based</span><span class="v">Austin, TX</span></div>
+  <div><span class="k">Onsite</span><span class="v">Up to 3 days/week</span></div>
+  <div><span class="k">Engagement</span><span class="v">W2 or C2C</span></div>
+  <div><span class="k">Notice</span><span class="v">2 weeks</span></div>
+</div></div>
+
+<section id="engagements"><div class="wrap">
+  <div class="sec-head"><span class="eyebrow">Selected engagements</span></div>
+
+  <div class="eng">
+    <div class="txt">
+      <div class="meta">
+        <div><span class="k">Client</span><span class="v">Biomedical</span></div>
+        <div><span class="k">Modules</span><span class="v">Discovery, SAM, CMDB</span></div>
+        <div><span class="k">Duration</span><span class="v">Ongoing</span></div>
+        <div><span class="k">Role</span><span class="v">Project manager</span></div>
+      </div>
+      <h2>One source of truth for a regulated manufacturer</h2>
+      <p class="serif">Assets lived in a legacy database, a spreadsheet registry, and a separate set of license records — none of which agreed. I own the migration to Discovery, SAM and a CSDM-aligned CMDB: process design, workshops, configuration, testing and the change management around go-live. The result is automated CI population, license reconciliation against real usage, and an audit trail that holds up in a validated environment.</p>
+    </div>
+    <figure class="fig">
+      <svg viewBox="0 0 380 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three disconnected legacy sources consolidating into a single CMDB feeding asset management and service mapping">
+        <g font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#8A8781" letter-spacing="0.8">
+          <text x="8" y="14">BEFORE</text><text x="228" y="14">AFTER</text>
+        </g>
+        <g font-family="Archivo, sans-serif" font-size="10.5">
+          <rect x="8" y="30" width="118" height="34" rx="3" fill="#EDEAE3" stroke="#D2CCC0" stroke-width=".8"/>
+          <text x="67" y="51" text-anchor="middle" fill="#5C6167">Legacy asset DB</text>
+          <rect x="8" y="72" width="118" height="34" rx="3" fill="#EDEAE3" stroke="#D2CCC0" stroke-width=".8"/>
+          <text x="67" y="93" text-anchor="middle" fill="#5C6167">Spreadsheet registry</text>
+          <rect x="8" y="114" width="118" height="34" rx="3" fill="#EDEAE3" stroke="#D2CCC0" stroke-width=".8"/>
+          <text x="67" y="135" text-anchor="middle" fill="#5C6167">License records</text>
+
+          <rect x="160" y="72" width="82" height="34" rx="3" fill="#E3E7EF" stroke="#8E9BB5" stroke-width=".8"/>
+          <text x="201" y="93" text-anchor="middle" fill="#3B4A6B">Discovery</text>
+
+          <rect x="272" y="64" width="100" height="50" rx="3" fill="#3B4A6B"/>
+          <text x="322" y="84" text-anchor="middle" fill="#F7F5F0" font-weight="500">CMDB</text>
+          <text x="322" y="99" text-anchor="middle" fill="#B6BECF" font-size="9.5">CSDM-aligned</text>
+
+          <rect x="272" y="8" width="100" height="32" rx="3" fill="#F3EADB" stroke="#D6C9B2" stroke-width=".8"/>
+          <text x="322" y="28" text-anchor="middle" fill="#8A5214">Software asset mgmt</text>
+          <rect x="272" y="138" width="100" height="32" rx="3" fill="#F3EADB" stroke="#D6C9B2" stroke-width=".8"/>
+          <text x="322" y="158" text-anchor="middle" fill="#8A5214">Service mapping</text>
+        </g>
+        <g stroke="#A9A296" stroke-width="1" fill="none">
+          <path d="M126 47 L146 47 L146 84 L156 84"/>
+          <path d="M126 89 L156 89"/>
+          <path d="M126 131 L146 131 L146 94 L156 94"/>
+          <path d="M242 89 L268 89"/>
+          <path d="M322 64 L322 44"/>
+          <path d="M322 114 L322 134"/>
+        </g>
+        <g fill="#A9A296">
+          <path d="M156 84 l-5 -2.5 v5 z"/><path d="M156 89 l-5 -2.5 v5 z"/><path d="M156 94 l-5 -2.5 v5 z"/>
+          <path d="M268 89 l-5 -2.5 v5 z"/>
+          <path d="M322 44 l-2.5 5 h5 z"/><path d="M322 134 l-2.5 -5 h5 z"/>
+        </g>
+        <text x="190" y="208" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#A9A296">Automated CI population replaces three manual registries</text>
+      </svg>
+      <figcaption>Schematic — representative structure, no client data</figcaption>
+    </figure>
+  </div>
+
+  <div class="eng flip">
+    <div class="txt">
+      <div class="meta">
+        <div><span class="k">Client</span><span class="v">Defense</span></div>
+        <div><span class="k">Modules</span><span class="v">ITSM, FSM, CSM</span></div>
+        <div><span class="k">Duration</span><span class="v">18 months</span></div>
+        <div><span class="k">Scale</span><span class="v">200,000 users</span></div>
+      </div>
+      <h2>FedRAMP deployment across 50 countries</h2>
+      <p class="serif">A global defense manufacturer needed ServiceNow under FedRAMP with DOD and NIST controls intact. I built the ITIL change management framework from the ground up — twenty readiness assessments, standardized outage procedures, and a CAB cadence that scaled across three continents. P1 and P2 incidents fell 20% across twelve critical systems within six months.</p>
+    </div>
+    <figure class="fig">
+      <svg viewBox="0 0 380 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Change governance flow from request through assessment, CAB review, scheduled window and post-implementation review">
+        <g font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#8A8781" letter-spacing="0.8">
+          <text x="8" y="14">CHANGE GOVERNANCE</text>
+        </g>
+        <g font-family="Archivo, sans-serif" font-size="10.5">
+          <rect x="8" y="30" width="96" height="32" rx="3" fill="#EDEAE3" stroke="#D2CCC0" stroke-width=".8"/>
+          <text x="56" y="50" text-anchor="middle" fill="#5C6167">Request raised</text>
+          <rect x="8" y="80" width="96" height="32" rx="3" fill="#E3E7EF" stroke="#8E9BB5" stroke-width=".8"/>
+          <text x="56" y="100" text-anchor="middle" fill="#3B4A6B">Risk assessed</text>
+          <rect x="8" y="130" width="96" height="32" rx="3" fill="#3B4A6B"/>
+          <text x="56" y="150" text-anchor="middle" fill="#F7F5F0">CAB review</text>
+          <rect x="8" y="180" width="96" height="32" rx="3" fill="#F3EADB" stroke="#D6C9B2" stroke-width=".8"/>
+          <text x="56" y="200" text-anchor="middle" fill="#8A5214">Post-implementation</text>
+        </g>
+        <g stroke="#A9A296" stroke-width="1" fill="none">
+          <path d="M56 62 L56 76"/><path d="M56 112 L56 126"/><path d="M56 162 L56 176"/>
+        </g>
+        <g fill="#A9A296">
+          <path d="M56 76 l-2.5 -5 h5 z"/><path d="M56 126 l-2.5 -5 h5 z"/><path d="M56 176 l-2.5 -5 h5 z"/>
+        </g>
+
+        <g font-family="IBM Plex Mono, monospace" font-size="9" fill="#8A8781">
+          <text x="140" y="34">RELEASE WINDOWS · ROLLING 4 WEEKS</text>
+        </g>
+        <g>
+          <rect x="140" y="44" width="232" height="1" fill="#DED9CF"/>
+          <rect x="140" y="52" width="52" height="16" rx="2" fill="#C9D2E2"/>
+          <rect x="200" y="52" width="34" height="16" rx="2" fill="#C9D2E2"/>
+          <rect x="242" y="52" width="70" height="16" rx="2" fill="#3B4A6B"/>
+          <rect x="320" y="52" width="40" height="16" rx="2" fill="#C9D2E2"/>
+          <rect x="140" y="74" width="34" height="16" rx="2" fill="#E8D9BE"/>
+          <rect x="182" y="74" width="62" height="16" rx="2" fill="#E8D9BE"/>
+          <rect x="252" y="74" width="44" height="16" rx="2" fill="#E8D9BE"/>
+          <rect x="140" y="96" width="76" height="16" rx="2" fill="#E0DCD3"/>
+          <rect x="224" y="96" width="48" height="16" rx="2" fill="#E0DCD3"/>
+          <rect x="280" y="96" width="60" height="16" rx="2" fill="#E0DCD3"/>
+        </g>
+        <g font-family="IBM Plex Mono, monospace" font-size="9" fill="#A9A296">
+          <text x="140" y="132">■ standard   ■ normal   ■ emergency</text>
+        </g>
+        <g font-family="Archivo, sans-serif" font-size="10.5" fill="#5C6167">
+          <text x="140" y="164">P1/P2 incidents</text>
+        </g>
+        <g>
+          <rect x="140" y="176" width="180" height="8" rx="2" fill="#E0DCD3"/>
+          <rect x="140" y="176" width="144" height="8" rx="2" fill="#3B4A6B"/>
+          <text x="140" y="202" font-family="IBM Plex Mono, monospace" font-size="9" fill="#A9A296">−20% across 12 critical systems, 6 months</text>
+        </g>
+      </svg>
+      <figcaption>Schematic — representative structure, no client data</figcaption>
+    </figure>
+  </div>
+
+  <div class="eng">
+    <div class="txt">
+      <div class="meta">
+        <div><span class="k">Client</span><span class="v">Higher education</span></div>
+        <div><span class="k">Modules</span><span class="v">FSM</span></div>
+        <div><span class="k">Duration</span><span class="v">14 months</span></div>
+        <div><span class="k">Scale</span><span class="v">40 campuses</span></div>
+      </div>
+      <h2>Field service across a 40-campus network</h2>
+      <p class="serif">Maintenance requests were routed on paper and tracked in three disconnected systems. I owned the FSM implementation end to end — process design, vendor coordination, and a rollout sequence that took campuses live in waves rather than all at once. Facility operations improved 20% and the college retired roughly $200K in annual operating cost.</p>
+    </div>
+    <figure class="fig">
+      <svg viewBox="0 0 380 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Wave-based rollout across forty campus sites over four quarters">
+        <g font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#8A8781" letter-spacing="0.8">
+          <text x="8" y="14">PHASED ROLLOUT · 40 SITES</text>
+        </g>
+        <g font-family="Archivo, sans-serif" font-size="10.5" fill="#5C6167">
+          <text x="8" y="196">Wave 1 · pilot</text><text x="104" y="196">Wave 2</text><text x="184" y="196">Wave 3</text><text x="264" y="196">Wave 4</text>
+        </g>
+        <g font-family="IBM Plex Mono, monospace" font-size="9" fill="#A9A296">
+          <text x="8" y="214">Q1 — 4 sites</text><text x="104" y="214">Q2 — 10</text><text x="184" y="214">Q3 — 14</text><text x="264" y="214">Q4 — 12</text>
+        </g>
+        <g>
+          <rect x="8" y="30" width="16" height="16" rx="2" fill="#3B4A6B"/><rect x="28" y="30" width="16" height="16" rx="2" fill="#3B4A6B"/><rect x="48" y="30" width="16" height="16" rx="2" fill="#3B4A6B"/><rect x="68" y="30" width="16" height="16" rx="2" fill="#3B4A6B"/>
+          <rect x="104" y="30" width="16" height="16" rx="2" fill="#5C6E91"/><rect x="124" y="30" width="16" height="16" rx="2" fill="#5C6E91"/><rect x="144" y="30" width="16" height="16" rx="2" fill="#5C6E91"/><rect x="164" y="30" width="16" height="16" rx="2" fill="#5C6E91"/><rect x="104" y="50" width="16" height="16" rx="2" fill="#5C6E91"/><rect x="124" y="50" width="16" height="16" rx="2" fill="#5C6E91"/><rect x="144" y="50" width="16" height="16" rx="2" fill="#5C6E91"/><rect x="164" y="50" width="16" height="16" rx="2" fill="#5C6E91"/><rect x="104" y="70" width="16" height="16" rx="2" fill="#5C6E91"/><rect x="124" y="70" width="16" height="16" rx="2" fill="#5C6E91"/>
+          <rect x="184" y="30" width="16" height="16" rx="2" fill="#94A0B8"/><rect x="204" y="30" width="16" height="16" rx="2" fill="#94A0B8"/><rect x="224" y="30" width="16" height="16" rx="2" fill="#94A0B8"/><rect x="244" y="30" width="16" height="16" rx="2" fill="#94A0B8"/><rect x="184" y="50" width="16" height="16" rx="2" fill="#94A0B8"/><rect x="204" y="50" width="16" height="16" rx="2" fill="#94A0B8"/><rect x="224" y="50" width="16" height="16" rx="2" fill="#94A0B8"/><rect x="244" y="50" width="16" height="16" rx="2" fill="#94A0B8"/><rect x="184" y="70" width="16" height="16" rx="2" fill="#94A0B8"/><rect x="204" y="70" width="16" height="16" rx="2" fill="#94A0B8"/><rect x="224" y="70" width="16" height="16" rx="2" fill="#94A0B8"/><rect x="244" y="70" width="16" height="16" rx="2" fill="#94A0B8"/><rect x="184" y="90" width="16" height="16" rx="2" fill="#94A0B8"/><rect x="204" y="90" width="16" height="16" rx="2" fill="#94A0B8"/>
+          <rect x="264" y="30" width="16" height="16" rx="2" fill="#E8D9BE"/><rect x="284" y="30" width="16" height="16" rx="2" fill="#E8D9BE"/><rect x="304" y="30" width="16" height="16" rx="2" fill="#E8D9BE"/><rect x="324" y="30" width="16" height="16" rx="2" fill="#E8D9BE"/><rect x="264" y="50" width="16" height="16" rx="2" fill="#E8D9BE"/><rect x="284" y="50" width="16" height="16" rx="2" fill="#E8D9BE"/><rect x="304" y="50" width="16" height="16" rx="2" fill="#E8D9BE"/><rect x="324" y="50" width="16" height="16" rx="2" fill="#E8D9BE"/><rect x="264" y="70" width="16" height="16" rx="2" fill="#E8D9BE"/><rect x="284" y="70" width="16" height="16" rx="2" fill="#E8D9BE"/><rect x="304" y="70" width="16" height="16" rx="2" fill="#E8D9BE"/><rect x="324" y="70" width="16" height="16" rx="2" fill="#E8D9BE"/>
+        </g>
+        <g stroke="#DED9CF" stroke-width="1"><path d="M8 172 H372"/></g>
+        <text x="8" y="164" font-family="IBM Plex Mono, monospace" font-size="9" fill="#A9A296">Each square = one campus site</text>
+      </svg>
+      <figcaption>Schematic — representative structure, no client data</figcaption>
+    </figure>
+  </div>
+</div></section>
+
+<section id="capabilities" style="padding-top:0"><div class="wrap">
+  <div class="sec-head"><span class="eyebrow">Capabilities</span></div>
+  <div class="caps">
+    <div><h3>Platform</h3><ul><li>ITSM</li><li>HRSD</li><li>SPM</li><li>HAM / SAM</li><li>GRC / IRM</li><li>SecOps</li><li>Discovery / CMDB</li></ul></div>
+    <div><h3>Practice</h3><ul><li>Program management</li><li>Change management</li><li>CSDM governance</li><li>Portfolio reporting</li><li>Vendor coordination</li><li>Go-live readiness</li></ul></div>
+    <div><h3>Method</h3><ul><li>ITIL 4</li><li>Agile / Scrum</li><li>Waterfall</li><li>OKR frameworks</li><li>Scrum master</li></ul></div>
+    <div><h3>Sectors</h3><ul><li>State and local</li><li>Federal / defense</li><li>Higher education</li><li>Utilities</li><li>Life sciences</li><li>Telecom</li></ul></div>
+  </div>
+</div></section>
+
+<div class="sandband"><section><div class="wrap">
+  <div class="sec-head"><span class="eyebrow">Certifications and track</span></div>
+  <div class="tlgrid">
+    <ul class="tl">
+      <li><div class="y">2026</div><div class="t">ServiceNow Certified System Administrator · ITIL 4 Foundation</div></li>
+      <li><div class="y">2023 — present</div><div class="t">Senior program manager · BW Consulting Services</div><div class="d">Discovery, SAM and CMDB migration for a biomedical manufacturer. Program and portfolio management for an enterprise cloud security initiative.</div></li>
+      <li><div class="y">2023 — 2025</div><div class="t">Senior project manager, public sector · ServiceNow partner</div><div class="d">15+ implementations across state, local, nonprofit, telecom and higher education. HRSD, FSM, GRC, IRM, SPM.</div></li>
+      <li><div class="y">2022 — 2023</div><div class="t">Enterprise ITSM change manager · defense</div><div class="d">FedRAMP deployment, ITIL change framework, global release governance.</div></li>
+      <li><div class="y">2017 — 2021</div><div class="t">Change management analyst · utilities</div><div class="d">$5M SAP transformation across 10+ sites, SOX and NERC alignment.</div></li>
+      <li><div class="y">2013</div><div class="t">B.A. International Relations · B.A. History</div><div class="d">Maxwell School of Citizenship and Public Affairs, Syracuse University.</div></li>
+    </ul>
+    <div class="ph ph-side"><b>Photo 02</b><i>Working shot — whiteboard, mid-diagram, cropped so nothing legible is client-specific</i></div>
+  </div>
+</div></section></div>
+
+<section id="writing"><div class="wrap">
+  <div class="sec-head"><span class="eyebrow">Writing</span></div>
+  <div class="posts">
+    <div class="post">
+      <div class="y">March 2026</div>
+      <h3>CSDM is a data model, not a project</h3>
+      <p>Most CMDB programs fail because CSDM gets treated as a one-time mapping exercise instead of an ongoing governance obligation. What that looks like in practice, and who has to own it.</p>
+    </div>
+    <div class="post">
+      <div class="y">January 2026</div>
+      <h3>What Discovery won't find for you</h3>
+      <p>Automated CI population solves the easy half of the problem. The half nobody budgets for is reconciling what Discovery returns against what procurement thinks you bought.</p>
+    </div>
+  </div>
+</div></section>
+
+<div class="close" id="contact"><div class="wrap">
+  <div>
+    <h2>Currently taking engagements from October</h2>
+    <p class="serif" style="max-width:32em">Twenty minutes is usually enough to know whether there's a fit. Send a role description, or book directly — no form, no gatekeeping.</p>
+    <div class="cta">
+      <a class="btn btn-p" href="#">Book 20 minutes</a>
+      <a class="btn btn-s" href="mailto:benjamin@bwcstexas.com">benjamin@bwcstexas.com</a>
+    </div>
+  </div>
+  <div class="ph" style="height:200px"><b>Photo 03</b><i>Deliverables still life — status report, change record, workshop deck, shot from above</i></div>
+</div></div>
+
+<footer><div class="wrap">
+  <span>BW Consulting Services LLC · Austin, TX</span>
+  <span><a href="#">Capability statement</a> · <a href="#">LinkedIn</a> · benjamin@bwcstexas.com</span>
+</div></footer>
+
+</body>
+</html>
